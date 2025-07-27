@@ -1,0 +1,57 @@
+name: 'Terraform Plan Visualizer'
+description: 'Visualize Terraform plans with Mermaid diagrams and change summaries in PR comments'
+
+inputs:
+  working-directory:
+    description: 'Directory containing Terraform files'
+    required: false
+    default: '.'
+  terraform-version:
+    description: 'Terraform version to use'
+    required: false
+    default: '1.7.5'
+  plan-args:
+    description: 'Additional arguments for terraform plan'
+    required: false
+    default: '-no-color -out=plan.out'
+  var-file:
+    description: 'Comma-separated list of var files to use'
+    required: false
+  infracost-enabled:
+    description: 'Enable Infracost cost analysis'
+    required: false
+    default: 'false'
+  policy-enabled:
+    description: 'Enable policy checks (Checkov/Conftest)'
+    required: false
+    default: 'false'
+  max-destroy:
+    description: 'Maximum number of resources that can be destroyed (0 = no limit)'
+    required: false
+    default: '0'
+  max-replace:
+    description: 'Maximum number of resources that can be replaced (0 = no limit)'
+    required: false
+    default: '0'
+
+outputs:
+  comment-url:
+    description: 'URL of the posted PR comment'
+  create-count:
+    description: 'Number of resources to be created'
+  update-count:
+    description: 'Number of resources to be updated'
+  replace-count:
+    description: 'Number of resources to be replaced'
+  destroy-count:
+    description: 'Number of resources to be destroyed'
+  has-risk:
+    description: 'Whether the plan contains risky changes (replace/destroy > thresholds)'
+
+runs:
+  using: 'node20'
+  main: 'dist/main.js'
+
+branding:
+  icon: 'map'
+  color: 'blue' 
