@@ -8,6 +8,7 @@ Turns Terraform plan output into visual diagrams and change summaries for PR rev
 - **Change summaries** - Clear tables of creates, updates, replaces, destroys
 - **Risk warnings** - Highlights dangerous operations
 - **Sticky comments** - Updates existing PR comments instead of spamming
+- **Automatic Terraform installation** - Installs the specified Terraform version
 
 ## Quick start
 
@@ -18,6 +19,10 @@ name: Terraform Plan Visualizer
 on:
   pull_request:
     paths: ['**/*.tf', '**/*.tfvars']
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   visualize:
@@ -40,10 +45,23 @@ jobs:
 | Input | Description | Default |
 |-------|-------------|---------|
 | `working-directory` | Terraform files location | `.` |
-| `terraform-version` | Terraform version | `1.7.5` |
+| `terraform-version` | Terraform version to install | `1.7.5` |
 | `max-destroy` | Max destroys allowed (0 = fail on any) | `0` |
 | `max-replace` | Max replaces allowed | `0` |
-| `var-file` | Variable files | - |
+| `var-file` | Variable files (comma-separated) | - |
+
+**Note:** If counts exceed thresholds, the job fails to block the merge.
+
+## Outputs
+
+| Output | Description |
+|--------|-------------|
+| `comment-url` | URL of the posted PR comment |
+| `create-count` | Number of resources to be created |
+| `update-count` | Number of resources to be updated |
+| `replace-count` | Number of resources to be replaced |
+| `destroy-count` | Number of resources to be destroyed |
+| `has-risk` | Whether the plan contains risky changes |
 
 ## Example output
 
