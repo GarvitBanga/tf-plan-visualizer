@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Visualize Terraform Plan
-        uses: your-username/terraform-visualizer@v0.1.0
+        uses: GarvitBanga/tf-plan-visualizer@v0.1.0
         with:
           working-directory: infra
           max-destroy: 0
@@ -47,25 +47,23 @@ jobs:
 
 ## Example output
 
-```markdown
-## Terraform Plan Visualizer
+The action generates PR comments like this:
 
-### Resource Graph
+**Resource Graph:**
 ```mermaid
 graph TD
   node_0["aws_instance.web +"]:::create
   node_1["aws_vpc.main +"]:::create
 ```
 
-### Change Summary
+**Change Summary:**
 | Action | Count |
 |--------|-------|
 | + Create | 2 |
 
-### Top Changes
+**Top Changes:**
 - + `aws_instance.web` create
 - + `aws_vpc.main` create
-```
 
 ## Development
 
